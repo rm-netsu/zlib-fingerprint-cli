@@ -1,0 +1,25 @@
+{
+	"name": "zlib-fingerprint-cli",
+	"version": "1.0.0",
+	"description": "CLI tool to detect exact zlib/deflate implementation and parameters for bit-exact reproduction",
+	"bin": {
+		"zlib-fingerprint": "./bin/cli.js"
+	},
+	"scripts": {
+		"build": "tsc",
+		"prepublishOnly": "npm run build"
+	},
+	"keywords": [
+		"zlib",
+		"deflate",
+		"png",
+		"reverse-engineering",
+		"compression"
+	],
+	"author": "",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^20.0.0",
+		"typescript": "^5.0.0"
+	}
+}

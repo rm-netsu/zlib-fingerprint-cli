@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# TypeScript build output
+dist/
+
+# Binaries in the binaries/ folder (keep the README, ignore binaries)
+binaries/*
+!binaries/README.md
+!binaries/download-binaries.sh
+!binaries/*.c
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Dev samples
+*.idat
