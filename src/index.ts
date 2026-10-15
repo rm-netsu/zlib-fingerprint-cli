@@ -164,6 +164,42 @@ export function findExactMatchWithBinaries(
 					}
 				}
 			}
+		} else if (profile.type === 'miniz') {
+			const minizLevels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+			for (const level of minizLevels) {
+				let matched = false
+				try {
+					const args = profile.getArgs({
+						level,
+						memLevel: 0,
+						strategy: 0,
+						windowBits: 15,
+						iteration: 0,
+					})
+					const result = cp.spawnSync(profile.binaryPath, args, {
+						input: uncompressedData,
+						maxBuffer: 1024 * 1024 * 100,
+					})
+
+					if (!result.error && result.status === 0) {
+						if (result.stdout.equals(originalCompressed)) {
+							matched = true
+						}
+					}
+				} catch (err) {}
+
+				const desc = `[Miniz] ${profile.name} | level=${level}`
+				if (onAttempt) onAttempt(desc, matched)
+
+				if (matched) {
+					return {
+						toolName: profile.name,
+						binaryPath: profile.binaryPath,
+						paramsSummary: `level=${level}`,
+						matched: true,
+					}
+				}
+			}
 		}
 	}
 

@@ -33,7 +33,7 @@ trap 'rm -rf "$TMP_DIR"' EXIT
 
 # 1. zlib 1.2.3
 if ! check_binary "zlib-1.2.3"; then
-    echo "[1/6] Building zlib 1.2.3..."
+    echo "[1/9] Building zlib 1.2.3..."
     cd "$TMP_DIR"
     curl -L https://www.zlib.net/fossils/zlib-1.2.3.tar.gz -o zlib-1.2.3.tar.gz
     tar -xzf zlib-1.2.3.tar.gz
@@ -46,7 +46,7 @@ fi
 
 # 2. zlib 1.2.5
 if ! check_binary "zlib-1.2.5"; then
-    echo "[2/6] Building zlib 1.2.5..."
+    echo "[2/9] Building zlib 1.2.5..."
     cd "$TMP_DIR"
     curl -L https://www.zlib.net/fossils/zlib-1.2.5.tar.gz -o zlib-1.2.5.tar.gz
     tar -xzf zlib-1.2.5.tar.gz
@@ -57,9 +57,22 @@ if ! check_binary "zlib-1.2.5"; then
     rm -rf "$TMP_DIR/*"
 fi
 
-# 3. zlib 1.2.8
+# 3. zlib 1.2.7
+if ! check_binary "zlib-1.2.7"; then
+    echo "[3/9] Building zlib 1.2.7..."
+    cd "$TMP_DIR"
+    curl -L https://www.zlib.net/fossils/zlib-1.2.7.tar.gz -o zlib-1.2.7.tar.gz
+    tar -xzf zlib-1.2.7.tar.gz
+    cd zlib-1.2.7
+    gcc -O3 "$CDIR/zlib_wrapper.c" -I. -L. -lz -o "zlib-1.2.7$EXT"
+    cp "zlib-1.2.7$EXT" "$CDIR/zlib-1.2.7$EXT"
+    cd "$CDIR"
+    rm -rf "$TMP_DIR/*"
+fi
+
+# 4. zlib 1.2.8
 if ! check_binary "zlib-1.2.8"; then
-    echo "[3/6] Building zlib 1.2.8..."
+    echo "[4/9] Building zlib 1.2.8..."
     cd "$TMP_DIR"
     curl -L https://www.zlib.net/fossils/zlib-1.2.8.tar.gz -o zlib-1.2.8.tar.gz
     tar -xzf zlib-1.2.8.tar.gz
@@ -70,9 +83,22 @@ if ! check_binary "zlib-1.2.8"; then
     rm -rf "$TMP_DIR/*"
 fi
 
-# 4. zlib 1.3.1
+# 5. zlib 1.2.11
+if ! check_binary "zlib-1.2.11"; then
+    echo "[5/9] Building zlib 1.2.11..."
+    cd "$TMP_DIR"
+    curl -L https://www.zlib.net/fossils/zlib-1.2.11.tar.gz -o zlib-1.2.11.tar.gz
+    tar -xzf zlib-1.2.11.tar.gz
+    cd zlib-1.2.11
+    gcc -O3 "$CDIR/zlib_wrapper.c" -I. -L. -lz -o "zlib-1.2.11$EXT"
+    cp "zlib-1.2.11$EXT" "$CDIR/zlib-1.2.11$EXT"
+    cd "$CDIR"
+    rm -rf "$TMP_DIR/*"
+fi
+
+# 6. zlib 1.3.1
 if ! check_binary "zlib-1.3.1"; then
-    echo "[4/6] Building zlib 1.3.1..."
+    echo "[6/9] Building zlib 1.3.1..."
     cd "$TMP_DIR"
     curl -L https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz -o zlib-1.3.1.tar.gz
     tar -xzf zlib-1.3.1.tar.gz
@@ -83,9 +109,9 @@ if ! check_binary "zlib-1.3.1"; then
     rm -rf "$TMP_DIR/*"
 fi
 
-# 5. Zopfli 1.0.3
+# 7. Zopfli 1.0.3
 if ! check_binary "zopfli-1.0.3"; then
-    echo "[5/6] Building Zopfli 1.0.3..."
+    echo "[7/9] Building Zopfli 1.0.3..."
     cd "$TMP_DIR"
     curl -L https://github.com/google/zopfli/archive/refs/tags/zopfli-1.0.3.tar.gz -o zopfli-1.0.3.tar.gz
     tar -xzf zopfli-1.0.3.tar.gz
@@ -97,9 +123,9 @@ if ! check_binary "zopfli-1.0.3"; then
     cd "$CDIR"
 fi
 
-# 6. libdeflate 1.20
-if ! check_binary "libdeflate"; then
-    echo "[6/6] Building libdeflate 1.20..."
+# 8. libdeflate 1.20
+if ! check_binary "libdeflate-1.20"; then
+    echo "[8/9] Building libdeflate 1.20..."
     cd "$TMP_DIR"
     curl -L https://github.com/ebiggers/libdeflate/archive/refs/tags/v1.20.tar.gz -o libdeflate.tar.gz
     tar -xzf libdeflate.tar.gz
@@ -111,7 +137,36 @@ if ! check_binary "libdeflate"; then
     
     # Компилируем нашу обертку, линкуя со статичной библиотекой libdeflate
     gcc -O3 "$CDIR/libdeflate_wrapper.c" build/libdeflate.a -I. -o "libdeflate$EXT"
-    cp "libdeflate$EXT" "$CDIR/libdeflate$EXT"
+    cp "libdeflate$EXT" "$CDIR/libdeflate-1.20$EXT"
+    cd "$CDIR"
+fi
+
+# 9. miniz
+if ! check_binary "miniz-3.1.2"; then
+    echo "[9/9] Building miniz from release zip..."
+    cd "$TMP_DIR"
+    
+    curl -L https://github.com/richgel999/miniz/releases/download/3.1.2/miniz-3.1.2.zip -o miniz.zip
+    unzip -q miniz.zip
+    
+    # В архиве miniz файлы могут лежать в корне или в папке. 
+    # Найдем miniz.c и miniz.h или скопируем из текущей распакованной структуры.
+    # Обычно в релизах miniz поставляется как единая пара miniz.c / miniz.h или через cmake.
+    # Если релиз использует CMake, соберем через cmake или возьмем корневые файлы.
+    
+    # Проверим наличие miniz.c прямо в распакованном или перейдем в папку сборки
+    if [ -f "miniz.c" ]; then
+        gcc -O3 "$CDIR/miniz_wrapper.c" miniz.c -I. -o "miniz$EXT"
+    else
+        # Если релиз требует cmake-сборки самой библиотеки miniz
+        cmake -B build -DCMAKE_BUILD_TYPE=Release
+        cmake --build build -j$(nproc)
+        # Линкуем со статической библиотекой miniz
+        gcc -O3 "$CDIR/miniz_wrapper.c" build/libminiz.a -Iminiz-path-if-needed -o "miniz$EXT" 2>/dev/null || \
+        gcc -O3 "$CDIR/miniz_wrapper.c" build/libminiz.a -I. -o "miniz$EXT"
+    fi
+    
+    cp "miniz$EXT" "$CDIR/miniz-3.1.2$EXT"
     cd "$CDIR"
 fi
 

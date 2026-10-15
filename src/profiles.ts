@@ -15,7 +15,7 @@ const zlibGetArgs = ({
 export interface BinaryProfile {
 	name: string
 	binaryPath: string
-	type: 'zlib' | 'zopfli' | 'libdeflate'
+	type: 'zlib' | 'zopfli' | 'libdeflate' | 'miniz'
 	getArgs: (params: {
 		level: number
 		memLevel: number
@@ -52,8 +52,14 @@ export function getProfiles(binariesDir: string): BinaryProfile[] {
 		},
 		{
 			name: 'libdeflate 1.20',
-			binaryPath: path.join(binariesDir, `libdeflate${ext}`),
+			binaryPath: path.join(binariesDir, `libdeflate-1.20${ext}`),
 			type: 'libdeflate',
+			getArgs: ({ level }) => [`${level}`],
+		},
+		{
+			name: 'miniz 3.1.2',
+			binaryPath: path.join(binariesDir, `miniz-3.1.2${ext}`),
+			type: 'miniz',
 			getArgs: ({ level }) => [`${level}`],
 		},
 		{
@@ -71,6 +77,18 @@ export function getProfiles(binariesDir: string): BinaryProfile[] {
 		{
 			name: 'zlib 1.2.3',
 			binaryPath: path.join(binariesDir, `zlib-1.2.3${ext}`),
+			type: 'zlib',
+			getArgs: zlibGetArgs,
+		},
+		{
+			name: 'zlib 1.2.7',
+			binaryPath: path.join(binariesDir, `zlib-1.2.7${ext}`),
+			type: 'zlib',
+			getArgs: zlibGetArgs,
+		},
+		{
+			name: 'zlib 1.2.11',
+			binaryPath: path.join(binariesDir, `zlib-1.2.11${ext}`),
 			type: 'zlib',
 			getArgs: zlibGetArgs,
 		},

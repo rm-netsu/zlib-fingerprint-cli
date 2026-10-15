@@ -105,13 +105,13 @@ If you are building binaries or running the tool on Windows via **MSYS2** (e.g.,
 1. **Required Toolchain Packages:**
 Before running the automatic download/compilation script, ensure you have GCC and the MSYS2 zlib development package installed in your shell:
 ```bash
-pacman -S --needed base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-zlib
+pacman -S --needed base-devel unzip mingw-w64-x86_64-toolchain mingw-w64-x86_64-zlib
 
 ```
 
 for UCRT64
 ```bash
-pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-zlib
+pacman -S --needed base-devel unzip mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-zlib
 
 ```
 
