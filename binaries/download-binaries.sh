@@ -33,7 +33,7 @@ trap 'rm -rf "$TMP_DIR"' EXIT
 
 # 1. zlib 1.2.3
 if ! check_binary "zlib-1.2.3"; then
-    echo "[1/9] Building zlib 1.2.3..."
+    echo "[1/10] Building zlib 1.2.3..."
     cd "$TMP_DIR"
     curl -L https://www.zlib.net/fossils/zlib-1.2.3.tar.gz -o zlib-1.2.3.tar.gz
     tar -xzf zlib-1.2.3.tar.gz
@@ -46,7 +46,7 @@ fi
 
 # 2. zlib 1.2.5
 if ! check_binary "zlib-1.2.5"; then
-    echo "[2/9] Building zlib 1.2.5..."
+    echo "[2/10] Building zlib 1.2.5..."
     cd "$TMP_DIR"
     curl -L https://www.zlib.net/fossils/zlib-1.2.5.tar.gz -o zlib-1.2.5.tar.gz
     tar -xzf zlib-1.2.5.tar.gz
@@ -59,7 +59,7 @@ fi
 
 # 3. zlib 1.2.7
 if ! check_binary "zlib-1.2.7"; then
-    echo "[3/9] Building zlib 1.2.7..."
+    echo "[3/10] Building zlib 1.2.7..."
     cd "$TMP_DIR"
     curl -L https://www.zlib.net/fossils/zlib-1.2.7.tar.gz -o zlib-1.2.7.tar.gz
     tar -xzf zlib-1.2.7.tar.gz
@@ -72,7 +72,7 @@ fi
 
 # 4. zlib 1.2.8
 if ! check_binary "zlib-1.2.8"; then
-    echo "[4/9] Building zlib 1.2.8..."
+    echo "[4/10] Building zlib 1.2.8..."
     cd "$TMP_DIR"
     curl -L https://www.zlib.net/fossils/zlib-1.2.8.tar.gz -o zlib-1.2.8.tar.gz
     tar -xzf zlib-1.2.8.tar.gz
@@ -85,7 +85,7 @@ fi
 
 # 5. zlib 1.2.11
 if ! check_binary "zlib-1.2.11"; then
-    echo "[5/9] Building zlib 1.2.11..."
+    echo "[5/10] Building zlib 1.2.11..."
     cd "$TMP_DIR"
     curl -L https://www.zlib.net/fossils/zlib-1.2.11.tar.gz -o zlib-1.2.11.tar.gz
     tar -xzf zlib-1.2.11.tar.gz
@@ -98,7 +98,7 @@ fi
 
 # 6. zlib 1.3.1
 if ! check_binary "zlib-1.3.1"; then
-    echo "[6/9] Building zlib 1.3.1..."
+    echo "[6/10] Building zlib 1.3.1..."
     cd "$TMP_DIR"
     curl -L https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz -o zlib-1.3.1.tar.gz
     tar -xzf zlib-1.3.1.tar.gz
@@ -111,7 +111,7 @@ fi
 
 # 7. Zopfli 1.0.3
 if ! check_binary "zopfli-1.0.3"; then
-    echo "[7/9] Building Zopfli 1.0.3..."
+    echo "[7/10] Building Zopfli 1.0.3..."
     cd "$TMP_DIR"
     curl -L https://github.com/google/zopfli/archive/refs/tags/zopfli-1.0.3.tar.gz -o zopfli-1.0.3.tar.gz
     tar -xzf zopfli-1.0.3.tar.gz
@@ -125,7 +125,7 @@ fi
 
 # 8. libdeflate 1.20
 if ! check_binary "libdeflate-1.20"; then
-    echo "[8/9] Building libdeflate 1.20..."
+    echo "[8/10] Building libdeflate 1.20..."
     cd "$TMP_DIR"
     curl -L https://github.com/ebiggers/libdeflate/archive/refs/tags/v1.20.tar.gz -o libdeflate.tar.gz
     tar -xzf libdeflate.tar.gz
@@ -143,7 +143,7 @@ fi
 
 # 9. miniz
 if ! check_binary "miniz-3.1.2"; then
-    echo "[9/9] Building miniz from release zip..."
+    echo "[9/10] Building miniz from release zip..."
     cd "$TMP_DIR"
     
     curl -L https://github.com/richgel999/miniz/releases/download/3.1.2/miniz-3.1.2.zip -o miniz.zip
@@ -167,6 +167,21 @@ if ! check_binary "miniz-3.1.2"; then
     fi
     
     cp "miniz$EXT" "$CDIR/miniz-3.1.2$EXT"
+    cd "$CDIR"
+fi
+
+# 10. AdvanceCOMP (advdef) - оптимизатор сырых DEFLATE/zlib потоков
+if ! check_binary "advdef-2.6"; then
+    echo "[10/10] Building AdvanceCOMP (advdef)..."
+    cd "$TMP_DIR"
+    if [ ! -f "advancecomp-2.6.tar.gz" ]; then
+        curl -L https://github.com/amadvance/advancecomp/releases/download/v2.6/advancecomp-2.6.tar.gz -o advancecomp-2.6.tar.gz
+    fi
+    tar -xzf advancecomp-2.6.tar.gz
+    cd advancecomp-2.6
+    ./configure
+    make -j$(nproc)
+    cp advdef$EXT "$CDIR/advdef-2.6$EXT"
     cd "$CDIR"
 fi
 

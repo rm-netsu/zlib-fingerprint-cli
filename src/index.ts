@@ -109,7 +109,7 @@ export function findExactMatchWithBinaries(
 			}
 		} else if (profile.type === 'zopfli') {
 			// Zopfli проверяем на Этапе 2
-			const iterationsList = [15, 50, 100, 250, 500]
+			const iterationsList = [1, 2, 3, 5, 10, 15, 50, 100, 250, 500]
 			for (const iteration of iterationsList) {
 				const matched = tryRunZopfli(
 					profile,

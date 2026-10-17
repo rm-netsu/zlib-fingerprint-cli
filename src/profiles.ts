@@ -15,7 +15,7 @@ const zlibGetArgs = ({
 export interface BinaryProfile {
 	name: string
 	binaryPath: string
-	type: 'zlib' | 'zopfli' | 'libdeflate' | 'miniz'
+	type: 'zlib' | 'zopfli' | 'libdeflate' | 'miniz' | 'advdef'
 	getArgs: (params: {
 		level: number
 		memLevel: number
@@ -61,6 +61,12 @@ export function getProfiles(binariesDir: string): BinaryProfile[] {
 			binaryPath: path.join(binariesDir, `miniz-3.1.2${ext}`),
 			type: 'miniz',
 			getArgs: ({ level }) => [`${level}`],
+		},
+		{
+			name: 'AdvanceCOMP 2.6 advdef',
+			binaryPath: path.join(binariesDir, `advdef-2.6${ext}`),
+			type: 'advdef',
+			getArgs: ({ level }) => [`-${level}`, '-z', '-k'],
 		},
 		{
 			name: 'zlib 1.3.1',
